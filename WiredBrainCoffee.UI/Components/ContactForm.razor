@@ -1,0 +1,54 @@
+﻿@using WiredBrainCoffee.Models.Services;
+
+@inject NavigationManager NavManager
+@inject IContactService ContactService
+
+<h1>Customer Contact</h1>
+<p>We'd love to hear from you! We try our best to respond within 24 hours.</p>
+
+@if (HasContacted)
+{
+    <div class="alert alert-success">Thank you @Contact.Name for contacting us! We'll be in touch soon.</div>
+}
+<hr />
+
+<EditForm Model="@Contact" method="post" FormName="Contact" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+    <div class="mb-3">
+        <label class="form-label" for="name">Name: </label>
+        <InputText id="firstName" class="form-control" @bind-Value="@Contact.Name" placeholder="Enter first name"></InputText>
+        <ValidationMessage For="@(() => Contact.Name)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="email">Email: </label>
+        <InputText id="email" class="form-control" @bind-Value="@Contact.Email" placeholder="Enter email"></InputText>
+        <ValidationMessage For="@(() => Contact.Email)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="email">Phone: </label>
+        <InputText id="phone" class="form-control" @bind-Value="@Contact.Phone" placeholder="Enter phone"></InputText>
+        <ValidationMessage For="@(() => Contact.Phone)" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" for="message">Message: </label>
+        <InputTextArea id="message" class="form-control" @bind-Value="@Contact.Message" placeholder="Enter message"></InputTextArea>
+        <ValidationMessage For="@(() => Contact.Message)" />
+    </div>
+    <button type="submit" class="btn btn-info float-end">Submit</button>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    public Contact Contact { get; set; } = new Contact();
+
+    public bool HasContacted = false;
+
+    private async void HandleValidSubmit()
+    {
+        await ContactService.PostContact(Contact);
+
+        Contact = new Contact();
+        HasContacted = true;
+    }
+}

@@ -1,0 +1,45 @@
+﻿@namespace WiredBrainCoffee.UI.Admin
+@attribute [StreamRendering(true)]
+
+@if (Items.Count == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<div>
+    <h2>Order History</h2>
+    <hr />
+    <div class="order-history">
+        <div class="grid">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Last Name</th>
+                        <th>First Name</th>
+                        <th>Notes</th>
+                        <th>Created</th>
+                        <th>Promo Code</th>
+                        <th>Item Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Items)
+                    {
+                        <tr>
+                            <td>@item.OrderNumber</td>
+                            <td>@item.LastName</td>
+                            <td>@item.FirstName</td>
+                            <td>@item.Notes</td>
+                            <td>@item.Created</td>
+                            <td>@item.PromoCode</td>
+                            <td>@item.Items.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+}
