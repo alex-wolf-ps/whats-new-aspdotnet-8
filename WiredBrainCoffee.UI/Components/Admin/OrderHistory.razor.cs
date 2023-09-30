@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.QuickGrid;
 using WiredBrainCoffee.Models;
 using WiredBrainCoffee.Models.Services;
 
@@ -9,12 +10,13 @@ namespace WiredBrainCoffee.UI.Admin
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        public List<Order> Items { get; set; } = new List<Order>();
+        PaginationState pagination = new PaginationState { ItemsPerPage = 5 };
+
+        public IQueryable<Order> Orders { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            await Task.Delay(3000);
-            Items = await OrderService.GetOrders();
+            Orders = (await OrderService.GetOrders()).AsQueryable();
         }
     }
 }

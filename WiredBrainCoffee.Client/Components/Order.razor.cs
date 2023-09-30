@@ -1,5 +1,4 @@
-﻿using Blazored.Modal.Services;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using WiredBrainCoffee.Models;
 using WiredBrainCoffee.Models.Services;
 
@@ -12,9 +11,6 @@ namespace WiredBrainCoffee.Client.Components
 
         [Inject]
         public NavigationManager NavManager { get; set; }
-        
-        [CascadingParameter] 
-        public IModalService Modal { get; set; }
 
         public List<MenuItem> CurrentOrder { get; set; } = new List<MenuItem>();
         public List<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
@@ -30,6 +26,11 @@ namespace WiredBrainCoffee.Client.Components
         public string SearchTerm { get; set; } = string.Empty;
 
         public List<MenuItem> FilteredMenu = new List<MenuItem>();
+
+        protected override async Task OnInitializedAsync()
+        {
+            MenuItems = await MenuService.GetMenuItems();
+        }
 
         public void FilterMenu()
         {
@@ -71,11 +72,6 @@ namespace WiredBrainCoffee.Client.Components
         private void PlaceOrder()
         {
             NavManager.NavigateTo("order-confirmation");
-        }
-
-        protected override async Task OnInitializedAsync()
-        {
-            MenuItems = await MenuService.GetMenuItems();
         }
     }
 }

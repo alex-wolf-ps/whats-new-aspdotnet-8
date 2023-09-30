@@ -12,6 +12,8 @@ builder.Services.AddBlazorise()
   .AddFontAwesomeIcons();
 
 builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<IMenuService, MenuService>(client =>
+    client.BaseAddress = new Uri("https://localhost:7289/"));
 builder.Services.AddHttpClient<IContactService, ContactService>(client =>
     client.BaseAddress = new Uri("https://localhost:7289/"));
 builder.Services.AddHttpClient<IOrderService, OrderService>(client =>

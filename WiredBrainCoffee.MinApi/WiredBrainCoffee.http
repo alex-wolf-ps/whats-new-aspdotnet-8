@@ -1,0 +1,49 @@
+@WiredBrainCoffeeAPI_HostAddress = https://localhost:7289
+@orderId = 1
+
+GET {{WiredBrainCoffeeAPI_HostAddress}}/orders
+Accept: application/json
+
+###
+
+GET {{WiredBrainCoffeeAPI_HostAddress}}/orders/{{orderId}}
+Accept: application/json
+
+###
+
+GET {{WiredBrainCoffeeAPI_HostAddress}}/orders/4500
+Accept: application/json
+
+###
+
+GET {{WiredBrainCoffeeAPI_HostAddress}}/email
+
+###
+GET {{WiredBrainCoffeeAPI_HostAddress}}/menu
+Accept: application/json
+
+###
+
+POST {{WiredBrainCoffeeAPI_HostAddress}}/contact
+Content-Type: application/json
+
+{
+  "name": "bob",
+  "phone": "555-123-4567",
+  "email": "bob@wiredbraincoffee.com",
+  "message": "Hello world"
+}
+
+###
+
+POST {{WiredBrainCoffeeAPI_HostAddress}}/contact-collection
+Content-Type: application/x-www-form-urlencoded
+
+name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com&message=hello
+
+###
+
+POST {{WiredBrainCoffeeAPI_HostAddress}}/contact-complex
+Content-Type: application/x-www-form-urlencoded
+
+name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com&message=hello

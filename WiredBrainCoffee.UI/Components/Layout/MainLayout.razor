@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Sections
+@inherits LayoutComponentBase
 
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
     <div class="container">
@@ -36,11 +37,13 @@
             </div>
             <div class="col-md-4">
                 <p class="m-0 text-white">Contact Info:</p>
-                <p class="m-0 text-white">Phone: 555-555-1234 <br />Address: 1234 Test <br />Email: Care@WiredBrain.com</p>
+                <p class="m-0 text-white"><SectionOutlet SectionName="NavBar" /> <br />Address: 1234 Test <br />Email: Care@WiredBrainCoffee.com</p>
             </div>
             <div class="col-md-4">
                 <p class="m-0 text-white">Coffee Fact of the Day</p>
-                <p class="m-0 text-white">More cups of coffee are drank every day than there are people on earth. <i>(May not be true)</i></p>
+                <p class="m-0 text-white">
+                    Coffee beans are technically fruit! The coffee plant is a fruit tree.
+                </p>
             </div>
         </div>
     </div>

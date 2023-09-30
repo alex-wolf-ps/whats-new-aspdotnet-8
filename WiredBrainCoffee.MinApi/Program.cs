@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Components.Endpoints;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
+using WiredBrainCoffee.MinApi;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
@@ -8,9 +12,10 @@ builder.Services.AddRequestTimeouts();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddKeyedScoped<IOrderService, OrderService>("orders");
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddHttpClient();
+builder.Services.AddRazorComponents();
 
 builder.Services.AddCors();
 
@@ -33,33 +38,39 @@ app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseRequestTimeouts();
 
-app.MapGet("/orders", (IOrderService orderService) =>
+app.MapGet("/orders", ([FromKeyedServices("orders)")]IOrderService orderService) =>
 {
-    Thread.Sleep(3000);
     return Results.Ok(orderService.GetOrders());
 });
 
-app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
+app.MapGet("/orders/{id}", ([FromKeyedServices("orders")]IOrderService orderService, int id) =>
 {
     return Results.Ok(orderService.GetOrderById(id));
 });
 
-app.MapPost("/contact", (Contact contact) =>
+app.MapPost("/contact-complex", ([FromForm]Contact contact) =>
 {
-    // save contact to database
-});
+    contact.SubmittedTime = DateTime.Now;
+
+    return contact;
+}).DisableAntiforgery();
+
+app.MapPost("/contact-collection", (IFormCollection collection) =>
+{
+    var name = collection["name"];
+
+    // TODO: Save to db
+}).DisableAntiforgery();
 
 app.MapGet("/menu", (IMenuService menuService) =>
 {
     return menuService.GetMenuItems();
 });
 
-//app.Use(async (context, next) =>
-//{
-//    Debugger.Break();
-//    await next.Invoke();
-//    Debugger.Break();
-//});
+app.Map("/email", (IMenuService menuService) =>
+{
+    return new RazorComponentResult<EmailConfirm>();
+});
 
 app.MapGet("/inventory", async (IHttpClientFactory factory, HttpContext context) =>
 {
@@ -82,9 +93,4 @@ app.Run();
 public partial class AotJsonSerializerContext : JsonSerializerContext
 {
 
-}
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 }

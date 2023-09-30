@@ -1,45 +1,54 @@
-﻿@namespace WiredBrainCoffee.UI.Admin
-@attribute [StreamRendering(true)]
+﻿@using Microsoft.AspNetCore.Components.QuickGrid
+@namespace WiredBrainCoffee.UI.Admin
 
-@if (Items.Count == 0)
+@if (Orders == null)
 {
-    <p><em>Loading...</em></p>
+    <p>Loading...</p>
 }
 else
 {
-<div>
-    <h2>Order History</h2>
-    <hr />
-    <div class="order-history">
-        <div class="grid">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Order #</th>
-                        <th>Last Name</th>
-                        <th>First Name</th>
-                        <th>Notes</th>
-                        <th>Created</th>
-                        <th>Promo Code</th>
-                        <th>Item Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var item in Items)
-                    {
+    <div>
+        <h2>Order History</h2>
+        <hr />
+        <div class="order-history">
+            <div class="grid">
+                <QuickGrid Items="@Orders" Pagination="@pagination">
+                    <PropertyColumn Property="@(o => o.OrderNumber)" Title="ID" Sortable="true" />
+                    <PropertyColumn Property="@(o => o.LastName)" Title="Last" Sortable="true" />
+                    <PropertyColumn Property="@(o => o.FirstName)" Title="First" Sortable="true" />
+                    <PropertyColumn Property="@(o => o.Notes)" Title="Notes" Sortable="true" />
+                    <PropertyColumn Property="@(o => o.Created)" Title="Date" Sortable="true" />
+                    <PropertyColumn Property="@(o => o.Items.Count)" Title="Count" Sortable="true" />
+                </QuickGrid>
+                <Paginator State="@pagination" />
+                @* <table class="table table-striped table-bordered">
+                    <thead>
                         <tr>
-                            <td>@item.OrderNumber</td>
-                            <td>@item.LastName</td>
-                            <td>@item.FirstName</td>
-                            <td>@item.Notes</td>
-                            <td>@item.Created</td>
-                            <td>@item.PromoCode</td>
-                            <td>@item.Items.Count</td>
+                            <th>Order #</th>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Notes</th>
+                            <th>Created</th>
+                            <th>Promo Code</th>
+                            <th>Item Count</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Items)
+                        {
+                            <tr>
+                                <td>@item.OrderNumber</td>
+                                <td>@item.LastName</td>
+                                <td>@item.FirstName</td>
+                                <td>@item.Notes</td>
+                                <td>@item.Created</td>
+                                <td>@item.PromoCode</td>
+                                <td>@item.Items.Count</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table> *@
+            </div>
         </div>
     </div>
-</div>
 }

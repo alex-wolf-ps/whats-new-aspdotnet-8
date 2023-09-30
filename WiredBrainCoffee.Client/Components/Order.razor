@@ -76,9 +76,19 @@
                                     @foreach (var item in MenuItems.Where(x => x.Category == "Food"))
                                     {
                                         <div class="col">
-                                            <MenuListItem MenuItem="item"
-                                                  OnDetailsCallback="(e => ViewDetails(item))"
-                                                  OnOrderCallback="(e => AddToOrder(item))" />
+                                            <div class="card">
+                                                    <img src="@item.ImageFile" />
+                                                <div class="card-body card-info">
+                                                        <h5 class="card-title">@item.Name</h5>
+                                                        <p class="card-text">@item.ShortDescription</p>
+                                                </div>
+                                                <ul class="list-group list-group-flush">
+                                                        <li class="list-group-item">Price: @item.Price.ToString("C")</li>
+                                                </ul>
+                                                <div class="card-body">
+                                                        <Button @onclick="(() => AddToOrder(item))" class="float-end" Color="Color.Success">Add</Button>
+                                                </div>
+                                            </div>
                                         </div>
                                     }
                                 </div>
