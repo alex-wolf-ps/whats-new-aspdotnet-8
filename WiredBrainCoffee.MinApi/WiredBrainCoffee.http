@@ -34,6 +34,19 @@ Content-Type: application/json
   "message": "Hello world"
 }
 
+
+###
+
+GET {{WiredBrainCoffeeAPI_HostAddress}}/antiforgery
+Accept: application/json
+
+###
+
+POST {{WiredBrainCoffeeAPI_HostAddress}}/contact
+Content-Type: application/x-www-form-urlencoded
+
+name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com&message=hello&__RequestVerificationToken=CfDJ8E0btJMCLd5BuS_cM03DX7q9ZbufR8Q_xjy9WBU1za0Cv9NqJlnj4yAEAXRqM_xkW8x6EeIkqxjRnvejSsRUGbm-OLZADDCeD-V5_8sDXJl89hm7APTaD6LZQH2qyQChnAWyJuCW5LYd7bFlPYyjLGk
+
 ###
 
 POST {{WiredBrainCoffeeAPI_HostAddress}}/contact-collection

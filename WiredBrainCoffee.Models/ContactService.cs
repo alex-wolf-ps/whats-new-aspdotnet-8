@@ -13,7 +13,7 @@ namespace WiredBrainCoffee.Models.Services
 
         public async Task PostContact(Contact contact)
         {
-            // await http.PostAsJsonAsync("contact", contact);
+            await http.PostAsJsonAsync("contact", contact);
         }
     }
 }

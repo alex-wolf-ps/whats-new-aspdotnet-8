@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Components.Endpoints;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -48,26 +49,31 @@ app.MapGet("/orders/{id}", ([FromKeyedServices("orders")]IOrderService orderServ
     return Results.Ok(orderService.GetOrderById(id));
 });
 
-app.MapPost("/contact-complex", ([FromForm]Contact contact) =>
+app.MapGet("/antiforgery", (HttpContext context, IAntiforgery antiforgery) =>
+{
+    return antiforgery.GetAndStoreTokens(context);
+});
+
+app.MapPost("/contact", (HttpContext context, [FromForm]Contact contact) =>
 {
     contact.SubmittedTime = DateTime.Now;
 
     return contact;
-}).DisableAntiforgery();
+});
 
-app.MapPost("/contact-collection", (IFormCollection collection) =>
-{
-    var name = collection["name"];
+//app.MapPost("/contact-collection", (IFormCollection collection) =>
+//{
+//    var name = collection["name"];
 
-    // TODO: Save to db
-}).DisableAntiforgery();
+//    // TODO: Save to db
+//});
 
 app.MapGet("/menu", (IMenuService menuService) =>
 {
     return menuService.GetMenuItems();
 });
 
-app.Map("/email", (IMenuService menuService) =>
+app.MapGet("/email", (IMenuService menuService) =>
 {
     return new RazorComponentResult<EmailConfirm>();
 });
