@@ -45,7 +45,8 @@ Accept: application/json
 POST {{WiredBrainCoffeeAPI_HostAddress}}/contact
 Content-Type: application/x-www-form-urlencoded
 
-name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com&message=hello&__RequestVerificationToken=CfDJ8E0btJMCLd5BuS_cM03DX7q9ZbufR8Q_xjy9WBU1za0Cv9NqJlnj4yAEAXRqM_xkW8x6EeIkqxjRnvejSsRUGbm-OLZADDCeD-V5_8sDXJl89hm7APTaD6LZQH2qyQChnAWyJuCW5LYd7bFlPYyjLGk
+name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com&message=hello
+&__RequestVerificationToken=sefJ8E0btJMCLd5BuS_cM03DX7oga4qBCUFbRPo0fTMt-BQPCOr0kX-AK8cP4k-VDv2e1rF_eCTTwzu6q9aQjDmi4nBnpIG_aI6-pRT8dQVL_45mmMwqk0ARmXmv0jhO7rfPrr0sInTashbMtuFz8P9LDnA
 
 ###
 

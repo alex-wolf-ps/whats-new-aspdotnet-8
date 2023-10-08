@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Components.Endpoints;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi;
 using WiredBrainCoffee.MinApi.Services;
@@ -39,14 +38,14 @@ app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseRequestTimeouts();
 
-app.MapGet("/orders", ([FromKeyedServices("orders)")]IOrderService orderService) =>
+app.MapGet("/orders", ([FromKeyedServices("orders")]IOrderService orderService) =>
 {
-    return Results.Ok(orderService.GetOrders());
+    return orderService.GetOrders();
 });
 
 app.MapGet("/orders/{id}", ([FromKeyedServices("orders")]IOrderService orderService, int id) =>
 {
-    return Results.Ok(orderService.GetOrderById(id));
+    return orderService.GetOrderById(id);
 });
 
 app.MapGet("/antiforgery", (HttpContext context, IAntiforgery antiforgery) =>
