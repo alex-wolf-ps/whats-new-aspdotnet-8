@@ -1,0 +1,23 @@
+﻿<div class="col">
+    <div class="card">
+        <img src="@MenuItem.ImageFile" />
+        <div class="card-body card-info">
+            <h5 class="card-title">@MenuItem.Name</h5>
+            <p class="card-text">@MenuItem.ShortDescription</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Price: @MenuItem.Price.ToString("C")</li>
+        </ul>
+        <div class="card-body">
+            <Button @onclick="(() => OnClickCallback.InvokeAsync(MenuItem))" class="float-end" Color="Color.Success">Add</Button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public MenuItem MenuItem { get; set; }
+
+    [Parameter]
+    public EventCallback<MenuItem> OnClickCallback { get; set; }
+}

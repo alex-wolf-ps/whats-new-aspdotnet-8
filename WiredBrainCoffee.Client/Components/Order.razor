@@ -20,23 +20,7 @@
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
                             @foreach (var item in FilteredMenu)
                             {
-                                <div class="col">
-                                    <div class="col">
-                                        <div class="card">
-                                            <img src="@item.ImageFile" />
-                                            <div class="card-body card-info">
-                                                <h5 class="card-title">@item.Name</h5>
-                                                <p class="card-text">@item.ShortDescription</p>
-                                            </div>
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item">Price: @item.Price.ToString("C")</li>
-                                            </ul>
-                                            <div class="card-body">
-                                                <Button @onclick="(() => AddToOrder(item))" class="float-end" Color="Color.Success">Add</Button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
                             }
                         </div>
                     }
@@ -53,21 +37,7 @@
                                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
                                     @foreach (var item in MenuItems.Where(x => x.Category == "Coffee"))
                                     {
-                                        <div class="col">
-                                            <div class="card">
-                                                    <img src="@item.ImageFile" />
-                                                <div class="card-body card-info">
-                                                        <h5 class="card-title">@item.Name</h5>
-                                                        <p class="card-text">@item.ShortDescription</p>
-                                                </div>
-                                                <ul class="list-group list-group-flush">
-                                                        <li class="list-group-item">Price: @item.Price.ToString("C")</li>
-                                                </ul>
-                                                <div class="card-body">
-                                                        <Button @onclick="(() => AddToOrder(item))" class="float-end" Color="Color.Success">Add</Button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
                                     }
                                 </div>
                             </TabPanel>
@@ -75,21 +45,7 @@
                                 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
                                     @foreach (var item in MenuItems.Where(x => x.Category == "Food"))
                                     {
-                                        <div class="col">
-                                            <div class="card">
-                                                    <img src="@item.ImageFile" />
-                                                <div class="card-body card-info">
-                                                        <h5 class="card-title">@item.Name</h5>
-                                                        <p class="card-text">@item.ShortDescription</p>
-                                                </div>
-                                                <ul class="list-group list-group-flush">
-                                                        <li class="list-group-item">Price: @item.Price.ToString("C")</li>
-                                                </ul>
-                                                <div class="card-body">
-                                                        <Button @onclick="(() => AddToOrder(item))" class="float-end" Color="Color.Success">Add</Button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
                                     }
                                 </div>
                             </TabPanel>
