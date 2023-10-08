@@ -1,4 +1,6 @@
 ﻿@using System.ComponentModel.DataAnnotations;
+@attribute [RenderModeServer]
+
 <div>
     <h2 class="mailing-header">Keep in Touch</h2>
     @if (Subscribed)
@@ -8,7 +10,7 @@
     else
     {
         <p class="mailing-subheader">Sign up for our mailing list - no spam, we promise.</p>
-        <EditForm Model="@Info" method="post" FormName="MailingList" OnValidSubmit="@HandleSubscribe">
+        <EditForm Model="@Info" method="post" OnValidSubmit="@HandleSubscribe">
             <DataAnnotationsValidator />
             <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
             <div class="mb-3">
@@ -25,7 +27,6 @@
 @code {
     public bool Subscribed { get; set; } = false;
 
-    [SupplyParameterFromForm(Handler = "MailingList")]
     public MailingInfo Info { get; set; } = new MailingInfo();
 
     private async void HandleSubscribe()

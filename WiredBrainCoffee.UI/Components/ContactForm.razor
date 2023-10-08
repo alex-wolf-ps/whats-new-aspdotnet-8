@@ -1,7 +1,7 @@
 ﻿@using WiredBrainCoffee.Models.Services;
-
 @inject NavigationManager NavManager
 @inject IContactService ContactService
+@attribute [RenderModeServer]
 
 <h1>Customer Contact</h1>
 <p>We'd love to hear from you! We try our best to respond within 24 hours.</p>
@@ -12,7 +12,7 @@
 }
 <hr />
 
-<EditForm Model="@Contact" method="post" FormName="Contact" OnValidSubmit="@HandleValidSubmit">
+<EditForm Model="@Contact" method="post" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
     <div class="mb-3">
@@ -39,16 +39,13 @@
 </EditForm>
 
 @code {
-    [SupplyParameterFromForm]
     public Contact Contact { get; set; } = new Contact();
 
     public bool HasContacted = false;
 
     private async void HandleValidSubmit()
     {
-        await ContactService.PostContact(Contact);
-
-        Contact = new Contact();
         HasContacted = true;
+        Contact = new();
     }
 }

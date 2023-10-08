@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
-	  <TargetFramework>net8.0</TargetFramework>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <Nullable>disable</Nullable>
-	  <NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
-	  <StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
-	  <NoWarn>CS8618</NoWarn>
+	<TargetFramework>net8.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>disable</Nullable>
+	<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+	<StaticWebAssetProjectMode>Default</StaticWebAssetProjectMode>
+	<NoWarn>CS8618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Blazored.Modal" Version="7.1.0" />
-	  <PackageReference Include="Blazorise.Bootstrap" Version="1.1.1" />
-	  <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.1.23421.29" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-rc.1.23421.29" />
+	<PackageReference Include="Blazored.Modal" Version="7.1.0" />
+	<PackageReference Include="Blazorise.Bootstrap" Version="1.1.1" />
+	<PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.1.1" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.0-rc.1.23421.29" />
+	<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.0-rc.1.23421.29" />
   </ItemGroup>
 
   <ItemGroup>
