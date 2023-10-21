@@ -5,7 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <NoWarn>CS8618</NoWarn>
-	  <PublishAot>true</PublishAot>
   </PropertyGroup>
 
   <ItemGroup>

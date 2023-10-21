@@ -1,6 +1,7 @@
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using WiredBrainCoffee.Client.Components;
 using WiredBrainCoffee.Models.Services;
 using WiredBrainCoffee.UI.Components;
 using WiredBrainCoffee.UI.Services;
@@ -20,7 +21,7 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
     client.BaseAddress = new Uri("https://localhost:7289/"));
 
 builder.Services.AddRazorComponents()
-    .AddWebAssemblyComponents()
+    .AddInteractiveWebAssemblyComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
@@ -40,9 +41,11 @@ else
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
-    .AddWebAssemblyRenderMode();
+    .AddInteractiveWebAssemblyRenderMode()
+    .AddAdditionalAssemblies(typeof(Order).Assembly);
 
 app.Run();
