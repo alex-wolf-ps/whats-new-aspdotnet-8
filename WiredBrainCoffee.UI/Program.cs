@@ -21,7 +21,7 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
 
 builder.Services.AddRazorComponents()
     .AddWebAssemblyComponents()
-    .AddServerComponents();
+    .AddInteractiveServerComponents();
 
 var app = builder.Build();
 
@@ -42,7 +42,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.MapRazorComponents<App>()
-    .AddWebAssemblyRenderMode()
-    .AddServerRenderMode(); 
+    .AddInteractiveServerRenderMode()
+    .AddWebAssemblyRenderMode();
 
 app.Run();

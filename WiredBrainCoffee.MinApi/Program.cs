@@ -48,5 +48,4 @@ app.MapGet("/menu", (IMenuService menuService) =>
     return menuService.GetMenuItems();
 });
 
-
 app.Run();
