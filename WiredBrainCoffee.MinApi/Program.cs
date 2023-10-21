@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
@@ -10,7 +9,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddHttpClient();
-builder.Services.AddRazorComponents();
 
 builder.Services.AddCors();
 
@@ -36,7 +34,7 @@ app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
     return orderService.GetOrderById(id);
 });
 
-app.MapPost("/contact", (HttpContext context, [FromForm]Contact contact) =>
+app.MapPost("/contact", (Contact contact) =>
 {
     contact.SubmittedTime = DateTime.Now;
 
