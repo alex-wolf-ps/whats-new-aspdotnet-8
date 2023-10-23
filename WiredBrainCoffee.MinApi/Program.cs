@@ -10,20 +10,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
-builder.Services.AddOutputCache();
-builder.Services.AddStackExchangeRedisOutputCache(options =>
-{
-    options.Configuration = "dotnet8redis.redis.cache.windows.net:6380,password=gBNZpgjTE37rQFO6UDsMbJMBL9TjwlkqpAzCaPhdFVg=,ssl=True,abortConnect=False";
-    options.InstanceName = "dotnet8redis";
-});
-builder.Services.AddRequestTimeouts();
-builder.Services.AddHttpClient();
-
-builder.Services.ConfigureHttpJsonOptions(options =>
-{
-    options.SerializerOptions.TypeInfoResolverChain
-    .Insert(0, AotJsonSerializerContext.Default);
-});
 
 builder.Services.AddCors();
 
@@ -36,28 +22,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseOutputCache();
 app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-app.UseRequestTimeouts();
-
-app.Use(async (context, next) =>
-{
-    // Executes at start of middleware pipeline for incoming request
-    Debugger.Break();
-
-    await next.Invoke();
-
-    // Executes at end of middleware pipeline for outgoing response
-    Debugger.Break();
-});
-
-app.MapGet("/liveness", () =>
-{
-    return "Alive";
-}).ShortCircuit();
-
-app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 
 app.MapGet("/orders", (IOrderService orderService) =>
 {
@@ -82,23 +48,4 @@ app.MapGet("/menu", (IMenuService menuService) =>
 })
 .CacheOutput();
 
-app.MapGet("/inventory", async (HttpContext context, IHttpClientFactory factory) => {
-
-    var client = factory.CreateClient();
-    var stockCount = await client
-    .GetStringAsync("https://localhost:7210/inventory", context.RequestAborted);
-
-    return stockCount;
-})
-.WithRequestTimeout(TimeSpan.FromSeconds(5));
-
 app.Run();
-
-[JsonSerializable(typeof(List<MenuItem>))]
-[JsonSerializable(typeof(List<Order>))]
-[JsonSerializable(typeof(Order))]
-[JsonSerializable(typeof(Contact))]
-public partial class AotJsonSerializerContext : JsonSerializerContext
-{
-
-}

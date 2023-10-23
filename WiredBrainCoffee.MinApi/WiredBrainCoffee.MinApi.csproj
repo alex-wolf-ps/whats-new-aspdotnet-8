@@ -5,9 +5,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	  <NoWarn>CS8618</NoWarn>
-	  <SelfContained>true</SelfContained>
-	  <PublishSingleFile>true</PublishSingleFile>
-	  <!--<PublishAot>true</PublishAot>-->
   </PropertyGroup>
 
   <ItemGroup>
