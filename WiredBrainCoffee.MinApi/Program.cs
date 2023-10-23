@@ -13,7 +13,7 @@ builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddOutputCache();
 builder.Services.AddStackExchangeRedisOutputCache(options =>
 {
-    options.Configuration = "dotnet8redis.redis.cache.windows.net:6380,password=gBNZpgjTE37rQFO6UDsMbJMBL9TjwlkqpAzCaPhdFVg=,ssl=True,abortConnect=False";
+    options.Configuration = "your_connection_string";
     options.InstanceName = "dotnet8redis";
 });
 builder.Services.AddRequestTimeouts();
