@@ -7,14 +7,16 @@ namespace WiredBrainCoffee.UI.Admin
 {
     public partial class OrderHistory
     {
+        PaginationState pagination = new PaginationState() { ItemsPerPage = 5 };
+
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        public List<Order> Orders { get; set; } = new List<Order>();
+        public IQueryable<Order> Orders { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Orders = (await OrderService.GetOrders()).ToList();
+            Orders = (await OrderService.GetOrders()).AsQueryable();
         }
     }
 }

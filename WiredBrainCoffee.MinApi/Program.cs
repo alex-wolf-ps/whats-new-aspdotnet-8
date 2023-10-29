@@ -50,8 +50,7 @@ app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 
 app.MapGet("/orders", (IOrderService orderService) =>
 {
-    Thread.Sleep(7000);
-    return orderService.GetOrders();
+    return orderService .GetOrders();
 });
 
 app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
