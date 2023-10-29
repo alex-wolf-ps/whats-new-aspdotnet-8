@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
@@ -41,17 +40,6 @@ app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseRequestTimeouts();
 
-app.Use(async (context, next) =>
-{
-    // Executes at start of middleware pipeline for incoming request
-    Debugger.Break();
-
-    await next.Invoke();
-
-    // Executes at end of middleware pipeline for outgoing response
-    Debugger.Break();
-});
-
 app.MapGet("/liveness", () =>
 {
     return "Alive";
@@ -62,7 +50,7 @@ app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 app.MapGet("/orders", (IOrderService orderService) =>
 {
     return orderService.GetOrders();
-}).CacheOutput();
+});
 
 app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
 {
