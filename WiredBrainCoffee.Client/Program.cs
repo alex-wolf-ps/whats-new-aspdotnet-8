@@ -6,7 +6,8 @@ using WiredBrainCoffee.Models.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:7289/") });
+builder.Services.AddScoped(sp => 
+    new HttpClient { BaseAddress = new Uri("https://localhost:7289/") });
 builder.Services.AddScoped<IMenuService, MenuService>();
 
 builder.Services.AddBlazorise()

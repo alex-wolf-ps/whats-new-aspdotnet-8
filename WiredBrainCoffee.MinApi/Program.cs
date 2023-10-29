@@ -41,17 +41,6 @@ app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseRequestTimeouts();
 
-app.Use(async (context, next) =>
-{
-    // Executes at start of middleware pipeline for incoming request
-    Debugger.Break();
-
-    await next.Invoke();
-
-    // Executes at end of middleware pipeline for outgoing response
-    Debugger.Break();
-});
-
 app.MapGet("/liveness", () =>
 {
     return "Alive";
@@ -61,8 +50,9 @@ app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 
 app.MapGet("/orders", (IOrderService orderService) =>
 {
+    Thread.Sleep(7000);
     return orderService.GetOrders();
-}).CacheOutput();
+});
 
 app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
 {
@@ -79,8 +69,7 @@ app.MapPost("/contact", (Contact contact) =>
 app.MapGet("/menu", (IMenuService menuService) =>
 {
     return menuService.GetMenuItems();
-})
-.CacheOutput();
+});
 
 app.MapGet("/inventory", async (HttpContext context, IHttpClientFactory factory) => {
 

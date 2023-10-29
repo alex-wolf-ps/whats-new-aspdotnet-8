@@ -1,5 +1,4 @@
 ﻿@using System.ComponentModel.DataAnnotations;
-@attribute [RenderModeInteractiveServer]
 
 <div>
     <h2 class="mailing-header">Keep in Touch</h2>
@@ -13,6 +12,9 @@
         <EditForm Model="@Info" method="post" OnValidSubmit="@HandleSubscribe">
             <DataAnnotationsValidator />
             <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+            <div class="mb-3">
+                <InputText id="name" class="form-control" @bind-Value="@Info.Name" placeholder="Enter name"></InputText>
+            </div>
             <div class="mb-3">
                 <InputText id="email" class="form-control" @bind-Value="@Info.Email" placeholder="Enter email"></InputText>
             </div>

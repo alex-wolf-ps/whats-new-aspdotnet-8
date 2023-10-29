@@ -10,7 +10,7 @@ namespace WiredBrainCoffee.UI.Admin
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; } = new List<Order>();
 
         protected override async Task OnInitializedAsync()
         {

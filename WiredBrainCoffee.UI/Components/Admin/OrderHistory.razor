@@ -1,7 +1,7 @@
-﻿@using Microsoft.AspNetCore.Components.QuickGrid
-@namespace WiredBrainCoffee.UI.Admin
+﻿@namespace WiredBrainCoffee.UI.Admin
+@attribute [StreamRendering]
 
-@if (Orders == null)
+@if (Orders.Count == 0)
 {
     <p>Loading...</p>
 }
@@ -42,4 +42,5 @@ else
             </div>
         </div>
     </div>
+
 }
