@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi.Services;
@@ -60,12 +61,19 @@ app.MapGet("/orders/{id}", (
     return orderService.GetOrderById(id);
 });
 
-app.MapPost("/contact", (Contact contact) =>
+app.MapPost("/contact-collection", (IFormCollection collection) =>
+{
+    var name = collection["name"];
+
+    // TODO: Save to db
+}).DisableAntiforgery();
+
+app.MapPost("/contact", (HttpContext context, [FromForm]Contact contact) =>
 {
     contact.SubmittedTime = DateTime.Now;
 
     return contact;
-});
+}).DisableAntiforgery();
 
 app.MapGet("/menu", (IMenuService menuService) =>
 {

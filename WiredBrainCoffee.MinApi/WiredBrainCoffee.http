@@ -29,3 +29,19 @@ Content-Type: application/json
   "email": "bob@wiredbraincoffee.com",
   "message": "Hello world"
 }
+
+###
+
+POST {{WiredBrainCoffeeAPI_URL}}/contact-collection
+Content-Type: application/x-www-form-urlencoded
+
+name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com
+&message=hello
+
+###
+
+POST {{WiredBrainCoffeeAPI_URL}}/contact
+Content-Type: application/x-www-form-urlencoded
+
+name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com
+&message=hello
