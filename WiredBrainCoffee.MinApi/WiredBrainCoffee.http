@@ -1,0 +1,31 @@
+@WiredBrainCoffeeAPI_URL = https://localhost:7289
+@orderId = 1
+
+GET {{WiredBrainCoffeeAPI_URL}}/orders
+Accept: application/json
+
+###
+
+GET {{WiredBrainCoffeeAPI_URL}}/orders/{{orderId}}
+Accept: application/json
+
+###
+
+GET {{WiredBrainCoffeeAPI_URL}}/orders/4500
+Accept: application/json
+
+###
+GET {{WiredBrainCoffeeAPI_URL}}/menu
+Accept: application/json
+
+###
+
+POST {{WiredBrainCoffeeAPI_URL}}/contact
+Content-Type: application/json
+
+{
+  "name": "bob",
+  "phone": "555-123-4567",
+  "email": "bob@wiredbraincoffee.com",
+  "message": "Hello world"
+}

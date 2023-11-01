@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddKeyedScoped<IOrderService, OrderService>("consumer");
 builder.Services.AddScoped<IMenuService, MenuService>();
 builder.Services.AddOutputCache();
 builder.Services.AddStackExchangeRedisOutputCache(options =>
@@ -47,12 +48,14 @@ app.MapGet("/liveness", () =>
 
 app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 
-app.MapGet("/orders", (IOrderService orderService) =>
+app.MapGet("/orders", (
+    [FromKeyedServices("consumer")]IOrderService orderService) =>
 {
     return orderService.GetOrders();
 });
 
-app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
+app.MapGet("/orders/{id}", (
+    [FromKeyedServices("consumer")] IOrderService orderService, int id) =>
 {
     return orderService.GetOrderById(id);
 });
@@ -67,8 +70,7 @@ app.MapPost("/contact", (Contact contact) =>
 app.MapGet("/menu", (IMenuService menuService) =>
 {
     return menuService.GetMenuItems();
-})
-.CacheOutput();
+});
 
 app.MapGet("/inventory", async (HttpContext context, IHttpClientFactory factory) => {
 
