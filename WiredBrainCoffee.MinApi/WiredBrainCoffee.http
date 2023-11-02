@@ -44,7 +44,8 @@ POST {{WiredBrainCoffeeAPI_URL}}/contact
 Content-Type: application/x-www-form-urlencoded
 
 name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com
-&message=hello&__RequestVerificationToken=CfDJ8DpmYRx-wQRMhAbO_Hjsv0zNtbzGfX2XNkNVaAvyVmklseEmkc6iE-e_WFsxnGv7TzrfNGZhd67ddNPwHeds5wziSc8pPhl204mHcvTxFFbgH0TsheNXGs-MEv5QSpt1Y5ioibzqvmAydTyQBTB__HA
+&message=hello
+
 ###
 
 GET {{WiredBrainCoffeeAPI_URL}}/antiforgery

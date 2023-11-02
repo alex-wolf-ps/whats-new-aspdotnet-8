@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi;
 using WiredBrainCoffee.MinApi.Services;
@@ -11,6 +12,16 @@ using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
+
+builder.Services.AddDbContext<WiredDbContext>(options =>
+    options.UseInMemoryDatabase("AppDb"));
+
+builder.Services.AddIdentityCore<WiredUser>()
+   .AddEntityFrameworkStores<WiredDbContext>()
+   .AddApiEndpoints();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,16 +35,19 @@ builder.Services.AddStackExchangeRedisOutputCache(options =>
 });
 builder.Services.AddRequestTimeouts();
 builder.Services.AddHttpClient();
+builder.Services.AddAntiforgery();
+builder.Services.AddRazorComponents();
+
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.TypeInfoResolverChain
     .Insert(0, AotJsonSerializerContext.Default);
 });
 builder.Services.AddCors();
-builder.Services.AddAntiforgery();
 
 var app = builder.Build();
 
+app.MapIdentityApi<WiredUser>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -41,11 +55,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseAntiforgery();
 app.UseOutputCache();
 app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseRequestTimeouts();
-app.UseAntiforgery();
+
+app.MapGet("/identity", (ClaimsPrincipal user) => $"Hello {user.Identity!.Name}").RequireAuthorization();
 
 app.MapGet("/liveness", () =>
 {
@@ -55,15 +71,25 @@ app.MapGet("/liveness", () =>
 app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 
 app.MapGet("/orders", (
-    [FromKeyedServices("consumer")]IOrderService orderService) =>
+    [FromKeyedServices("consumer")] IOrderService orderService) =>
 {
     return orderService.GetOrders();
-});
+}).RequireAuthorization();
 
 app.MapGet("/orders/{id}", (
     [FromKeyedServices("consumer")] IOrderService orderService, int id) =>
 {
     return orderService.GetOrderById(id);
+}).RequireAuthorization();
+
+app.MapGet("/antiforgery", (HttpContext context, IAntiforgery antiforgery) =>
+{
+    return antiforgery.GetAndStoreTokens(context);
+});
+
+app.MapGet("/contact-widget", () =>
+{
+    return new RazorComponentResult<ContactWidget>();
 });
 
 app.MapPost("/contact-collection", (IFormCollection collection) =>
@@ -73,16 +99,11 @@ app.MapPost("/contact-collection", (IFormCollection collection) =>
     // TODO: Save to db
 });
 
-app.MapPost("/contact", (HttpContext context, [FromForm]Contact contact) =>
+app.MapPost("/contact", (HttpContext context, [FromForm] Contact contact) =>
 {
     contact.SubmittedTime = DateTime.Now;
 
     return contact;
-});
-
-app.MapGet("/antiforgery", (HttpContext context, IAntiforgery antiforgery) =>
-{
-    return antiforgery.GetAndStoreTokens(context);
 });
 
 app.MapGet("/menu", (IMenuService menuService) =>
@@ -111,9 +132,9 @@ public partial class AotJsonSerializerContext : JsonSerializerContext
 
 }
 
-class MyUser : IdentityUser { }
+class WiredUser : IdentityUser { }
 
-class AppDbContext : IdentityDbContext<MyUser>
+class WiredDbContext : IdentityDbContext<WiredUser>
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public WiredDbContext(DbContextOptions<WiredDbContext> options) : base(options) { }
 }
