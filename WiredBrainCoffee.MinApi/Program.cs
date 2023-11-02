@@ -1,11 +1,26 @@
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
+using WiredBrainCoffee.MinApi;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
+
+builder.Services.AddDbContext<AppDbContext>(options => options.UseInMemoryDatabase("AppDb"));
+
+builder.Services.AddIdentityCore<MyUser>()
+   .AddEntityFrameworkStores<AppDbContext>()
+   .AddApiEndpoints();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -19,16 +34,19 @@ builder.Services.AddStackExchangeRedisOutputCache(options =>
 });
 builder.Services.AddRequestTimeouts();
 builder.Services.AddHttpClient();
+builder.Services.AddAntiforgery();
+builder.Services.AddRazorComponents();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.TypeInfoResolverChain
     .Insert(0, AotJsonSerializerContext.Default);
 });
-
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.MapIdentityApi<MyUser>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -36,11 +54,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseAntiforgery();
 app.UseOutputCache();
 app.UseHttpsRedirection();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseRequestTimeouts();
+
+app.MapGet("/identity", (ClaimsPrincipal user) => $"Hello {user.Identity!.Name}").RequireAuthorization();
 
 app.MapGet("/liveness", () =>
 {
@@ -61,19 +81,29 @@ app.MapGet("/orders/{id}", (
     return orderService.GetOrderById(id);
 });
 
+app.MapGet("/antiforgery", (HttpContext context, IAntiforgery antiforgery) =>
+{
+    return antiforgery.GetAndStoreTokens(context);
+});
+
+app.MapGet("/widget", () =>
+{
+    return new RazorComponentResult<EmailConfirm>();
+});
+
 app.MapPost("/contact-collection", (IFormCollection collection) =>
 {
     var name = collection["name"];
 
     // TODO: Save to db
-}).DisableAntiforgery();
+});
 
 app.MapPost("/contact", (HttpContext context, [FromForm]Contact contact) =>
 {
     contact.SubmittedTime = DateTime.Now;
 
     return contact;
-}).DisableAntiforgery();
+});
 
 app.MapGet("/menu", (IMenuService menuService) =>
 {
@@ -99,4 +129,11 @@ app.Run();
 public partial class AotJsonSerializerContext : JsonSerializerContext
 {
 
+}
+
+class MyUser : IdentityUser { }
+
+class AppDbContext : IdentityDbContext<MyUser>
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 }

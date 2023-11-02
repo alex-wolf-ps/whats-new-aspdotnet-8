@@ -1,3 +1,18 @@
-﻿<h1>Thank you!</h1>
+﻿@using Microsoft.AspNetCore.Components.Forms
 
-<p>You were added to our mailing list on @DateTime.Now.ToShortDateString()</p>
+<p>Mailing list sign up</p>
+
+<form method="post" action="/contact">
+    <input type="text" name="email" />
+    <button type="submit" class="btn btn-info float-end">Submit</button>
+    <AntiforgeryToken />
+</form>
+@* 
+@code{
+    public MailingInfo Info { get; set; }
+
+    public class MailingInfo 
+    {
+        public string Email { get; set; }
+    }
+} *@
