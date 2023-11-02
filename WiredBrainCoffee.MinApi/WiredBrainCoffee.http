@@ -44,51 +44,9 @@ POST {{WiredBrainCoffeeAPI_URL}}/contact
 Content-Type: application/x-www-form-urlencoded
 
 name=bob&phone=555-123-4567&email=test@wiredbraincoffee.com
-&message=hello&__RequestVerificationToken=CfDJ8DpmYRx-wQRMhAbO_Hjsv0x_RG5V045ZPuZlAJ-Gh4Y1kbRcpH9duhP8DTDNIEQB3L7LwxQ4fYSFSwXPomM2Dhau5ijjB1nobnF6gtexS7sREAk7YN1yTIuWZZdRk5r1MvFmYUPNiC-PMIdIZD9avT4
+&message=hello&__RequestVerificationToken=CfDJ8DpmYRx-wQRMhAbO_Hjsv0zNtbzGfX2XNkNVaAvyVmklseEmkc6iE-e_WFsxnGv7TzrfNGZhd67ddNPwHeds5wziSc8pPhl204mHcvTxFFbgH0TsheNXGs-MEv5QSpt1Y5ioibzqvmAydTyQBTB__HA
 ###
 
 GET {{WiredBrainCoffeeAPI_URL}}/antiforgery
 
 ###
-
-GET {{WiredBrainCoffeeAPI_URL}}/identity
-Bearer: your-access-token
-
-###
-
-POST {{WiredBrainCoffeeAPI_URL}}/register
-Content-Type: application/json
-
-{
-  "username": "{{user}}",
-  "password": "{{password}}",
-  "email": "{{email}}"
-}
-
-###
-
-POST {{WiredBrainCoffeeAPI_URL}}/login
-Content-Type: application/json
-
-{
-  "username": "{{user}}",
-  "password": "{{password}}"
-}
-
-###
-
-@token=<your token here>
-GET {{WiredBrainCoffeeAPI_URL}}
-Authorization: Bearer {{token}}
-
-
-###
-
-@refreshToken=<your refresh token here>
-
-POST {{WiredBrainCoffeeAPI_URL}}/refresh
-Content-Type: application/json
-
-{
-  "refreshToken": "{{refreshToken}}"
-}
