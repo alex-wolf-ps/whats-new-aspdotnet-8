@@ -1,0 +1,11 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<p>Mailing list sign up</p>
+
+<form method="post" action="/contact">
+    <input type="text" placeholder="Name" name="name" />
+    <input type="text" placeholder="Email" name="email" />
+    <input type="text" placeholder="Phone" name="phone" />
+    <button type="submit">Submit</button>
+    <AntiforgeryToken />
+</form>
