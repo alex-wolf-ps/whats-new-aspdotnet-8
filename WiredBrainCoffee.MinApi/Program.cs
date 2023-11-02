@@ -31,7 +31,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 });
 builder.Services.AddCors();
 builder.Services.AddAntiforgery();
-builder.Services.AddRazorComponents();
 
 var app = builder.Build();
 
@@ -79,10 +78,6 @@ app.MapPost("/contact", (HttpContext context, [FromForm]Contact contact) =>
     contact.SubmittedTime = DateTime.Now;
 
     return contact;
-});
-
-app.MapGet("/contact", () => {
-    return new RazorComponentResult<ContactWidget>();
 });
 
 app.MapGet("/antiforgery", (HttpContext context, IAntiforgery antiforgery) =>
