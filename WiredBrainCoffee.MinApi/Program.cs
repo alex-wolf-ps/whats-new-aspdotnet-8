@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
@@ -60,7 +62,7 @@ app.MapShortCircuit(400, "robots.txt", "sitemap.xml");
 app.MapGet("/orders", (IOrderService orderService) =>
 {
     return orderService.GetOrders();
-}).CacheOutput();
+});
 
 app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
 {
