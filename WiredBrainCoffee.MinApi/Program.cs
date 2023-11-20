@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 using WiredBrainCoffee.MinApi.Services;
 using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
@@ -8,7 +10,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
-builder.Services.AddHttpClient();
 
 builder.Services.AddCors();
 
@@ -27,7 +28,7 @@ app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.MapGet("/orders", (IOrderService orderService) =>
 {
     return orderService.GetOrders();
-});
+}).CacheOutput();
 
 app.MapGet("/orders/{id}", (IOrderService orderService, int id) =>
 {
@@ -44,6 +45,7 @@ app.MapPost("/contact", (Contact contact) =>
 app.MapGet("/menu", (IMenuService menuService) =>
 {
     return menuService.GetMenuItems();
-});
+})
+.CacheOutput();
 
 app.Run();

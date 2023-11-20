@@ -1,0 +1,46 @@
+﻿@using System.ComponentModel.DataAnnotations;
+
+<div>
+    <h2 class="mailing-header">Keep in Touch</h2>
+    @if (Subscribed)
+    {
+        <div class="alert alert-success">Thanks, @Info.Name for signing up! You'll hear from us soon with a coupon code.</div>
+    }
+    else
+    {
+        <p class="mailing-subheader">Sign up for our mailing list - no spam, we promise.</p>
+        <EditForm Model="@Info" method="post" OnValidSubmit="@HandleSubscribe">
+            <DataAnnotationsValidator />
+            <Microsoft.AspNetCore.Components.Forms.ValidationSummary />
+            <div class="mb-3">
+                <InputText id="name" class="form-control" @bind-Value="@Info.Name" placeholder="Enter name"></InputText>
+            </div>
+            <div class="mb-3">
+                <InputText id="email" class="form-control" @bind-Value="@Info.Email" placeholder="Enter email"></InputText>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-info float-end">Submit</button>
+            </div>
+        </EditForm>
+        <div class="clearfix" />
+    }
+</div>
+
+@code {
+    public bool Subscribed { get; set; } = false;
+
+    public MailingInfo Info { get; set; } = new MailingInfo();
+
+    private async void HandleSubscribe()
+    {
+        // Code to subscribe them
+        Subscribed = true;
+    }
+
+    public class MailingInfo
+    {
+        [Required]
+        public string Email { get; set; }
+        public string Name { get; set; }
+    }
+}
