@@ -21,7 +21,6 @@ builder.Services.AddHttpClient<IOrderService, OrderService>(client =>
     client.BaseAddress = new Uri("https://localhost:7289/"));
 
 builder.Services.AddRazorComponents()
-    .AddInteractiveWebAssemblyComponents()
     .AddInteractiveServerComponents();
 
 var app = builder.Build();
@@ -44,8 +43,6 @@ app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode()
-    .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Order).Assembly);
+    .AddInteractiveServerRenderMode();
 
 app.Run();
