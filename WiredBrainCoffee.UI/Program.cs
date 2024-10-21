@@ -1,9 +1,8 @@
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
-using WiredBrainCoffee.Client.Components;
-using WiredBrainCoffee.Models.Services;
 using WiredBrainCoffee.UI.Components;
+using WiredBrainCoffee.Models.Services;
 using WiredBrainCoffee.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
