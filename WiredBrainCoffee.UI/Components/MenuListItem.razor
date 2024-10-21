@@ -9,7 +9,7 @@
             <li class="list-group-item">Price: @MenuItem.Price.ToString("C")</li>
         </ul>
         <div class="card-body">
-            <Button @onclick="(() => OnClickCallback.InvokeAsync(MenuItem))" class="float-end" Color="Color.Success">Add</Button>
+            <button @onclick="(() => OnClickCallback.InvokeAsync(MenuItem))" class="btn btn-success float-end" Color="Color.Success">Add</button>
         </div>
     </div>
 </div>

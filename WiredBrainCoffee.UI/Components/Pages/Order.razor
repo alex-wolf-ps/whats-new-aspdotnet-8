@@ -15,7 +15,7 @@
                     <input class="form-control" style="max-width: 250px; display: inline-block;" placeholder="Search..." @bind="SearchTerm" />
                     <button @onclick="FilterMenu" class="btn btn-info">Search</button>
                     <hr />
-                    @if(FilteredMenu.Count() > 0)
+                    @if(FilteredMenu.Count() > 0 )
                     {
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
                             @foreach (var item in FilteredMenu)
@@ -27,30 +27,34 @@
                 </div>
                 @if (FilteredMenu.Count() == 0)
                 {
-                    <Tabs FullWidth SelectedTab="@(ActiveTab != null ? ActiveTab : "coffee")" SelectedTabChanged="@OnSelectedTabChanged">
-                        <Items>
-                            <Tab Name="coffee">Coffee</Tab>
-                            <Tab Name="food">Food</Tab>
-                        </Items>
-                        <Content>
-                            <TabPanel Name="coffee">
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-                                    @foreach (var item in MenuItems.Where(x => x.Category == "Coffee"))
-                                    {
-                                        <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
-                                    }
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#coffee" type="button" role="tab" aria-controls="home" aria-selected="true">Cofee</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#food" type="button" role="tab" aria-controls="profile" aria-selected="false">Food</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="coffee" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+
+                                @foreach (var item in MenuItems.Where(x => x.Category == "Coffee"))
+                                {
+                                    <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
+                                }
                                 </div>
-                            </TabPanel>
-                            <TabPanel Name="food">
-                                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
-                                    @foreach (var item in MenuItems.Where(x => x.Category == "Food"))
-                                    {
-                                        <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
-                                    }
-                                </div>
-                            </TabPanel>
-                        </Content>
-                    </Tabs>
+                        </div>
+                        <div class="tab-pane fade" id="food" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
+
+                            @foreach (var item in MenuItems.Where(x => x.Category == "Food"))
+                            {
+                                <MenuListItem MenuItem="item" OnClickCallback="(e => AddToOrder(item))" />
+                            }
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
             <div class="col-md-4">
@@ -70,7 +74,7 @@
                             <input @bind-value="PromoCode" type="text" placeholder="Enter promo code" class="form-control" />
                         </div>
                         <br />
-                        <Button @onclick="PlaceOrder" Color="Color.Info" class="float-end">Place Order</Button>
+                        <button @onclick="PlaceOrder" class="float-end btn btn-primary">Place Order</button>
                     </div>
                 </div>
             </div>

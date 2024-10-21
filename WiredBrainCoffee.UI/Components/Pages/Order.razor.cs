@@ -19,10 +19,6 @@ namespace WiredBrainCoffee.UI.Components.Pages
         public string PromoCode { get; set; } = string.Empty;
         public decimal Discount { get; set; } = 0;
 
-        [Parameter]
-        [SupplyParameterFromQuery]
-        public string ActiveTab { get; set; }
-
         public string SearchTerm { get; set; } = string.Empty;
 
         public List<MenuItem> FilteredMenu = new List<MenuItem>();
@@ -43,12 +39,6 @@ namespace WiredBrainCoffee.UI.Components.Pages
             {
                 FilteredMenu = new();
             }
-        }
-
-        private Task OnSelectedTabChanged(string name)
-        {
-            ActiveTab = name;
-            return Task.CompletedTask;
         }
 
         private void AddToOrder(MenuItem item)
