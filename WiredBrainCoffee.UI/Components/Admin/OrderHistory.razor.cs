@@ -10,11 +10,11 @@ namespace WiredBrainCoffee.UI.Admin
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public IQueryable<Order> Orders { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Orders = (await OrderService.GetOrders()).ToList();
+            Orders = (await OrderService.GetOrders()).AsQueryable();
         }
     }
 }

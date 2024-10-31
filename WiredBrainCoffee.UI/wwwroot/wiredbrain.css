@@ -203,10 +203,7 @@ input[type="radio"] {
         background-color: #eee;
     }
 
-.page-wrapper {
-    min-height: 1000px;
-}
-
+ 
 #alertContainer {
     font-size: 1.5em;
 }
@@ -267,4 +264,21 @@ input {
 
 .list-group {
     border-radius: 0;
+}
+
+.admin-grid tbody {
+    max-height: 500px;
+}
+
+.admin-grid tr {
+    height: 75px;
+}
+
+.order-history {
+    max-height: 500px !important;
+    overflow-y: scroll
+}
+
+.page-wrapper {
+    min-height: 1000px;
 }

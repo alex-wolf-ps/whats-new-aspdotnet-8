@@ -1,14 +1,15 @@
 ﻿<div class="col">
     <div class="card">
         <img src="@MenuItem.ImageFile" />
-        <div class="card-body card-info">
+        <div class="card-body" style="min-height:125px">
             <h5 class="card-title">@MenuItem.Name</h5>
             <p class="card-text">@MenuItem.ShortDescription</p>
         </div>
-        <ul class="list-group list-group-flush">
+       @*  <ul class="list-group list-group-flush">
             <li class="list-group-item">Price: @MenuItem.Price.ToString("C")</li>
-        </ul>
-        <div class="card-body">
+        </ul> *@
+        <div class="card-footer card-actions">
+            <span style="padding: 5px; display: inline-block">@MenuItem.Price.ToString("C")</span>
             <button @onclick="(() => OnClickCallback.InvokeAsync(MenuItem))" class="btn btn-success float-end" Color="Color.Success">Add</button>
         </div>
     </div>

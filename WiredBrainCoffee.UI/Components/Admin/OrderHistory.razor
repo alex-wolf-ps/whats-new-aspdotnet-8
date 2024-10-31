@@ -1,5 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components.QuickGrid
-@namespace WiredBrainCoffee.UI.Admin
+﻿@namespace WiredBrainCoffee.UI.Admin
+@using Microsoft.AspNetCore.Components.QuickGrid
 
 @if (Orders == null)
 {
@@ -12,34 +12,18 @@ else
         <hr />
         <div class="order-history">
             <div class="grid">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Order #</th>
-                            <th>Last Name</th>
-                            <th>First Name</th>
-                            <th>Notes</th>
-                            <th>Created</th>
-                            <th>Promo Code</th>
-                            <th>Item Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Orders)
-                        {
-                            <tr>
-                                <td>@item.OrderNumber</td>
-                                <td>@item.LastName</td>
-                                <td>@item.FirstName</td>
-                                <td>@item.Notes</td>
-                                <td>@item.Created</td>
-                                <td>@item.PromoCode</td>
-                                <td>@item.Items.Count</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                <QuickGrid Class="admin-grid table table-striped table-bordered" Items="Orders" Virtualize="true" OverscanCount="5">
+                    <PropertyColumn  Property="@(p => p.Id)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.OrderNumber)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.LastName)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.FirstName)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.Notes)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.Created)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.PromoCode)" Sortable="true" />
+                    <PropertyColumn  Property="@(p => p.Items.Count)" Sortable="true" />
+                </QuickGrid>
             </div>
         </div>
     </div>
 }
+
