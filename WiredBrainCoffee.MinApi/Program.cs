@@ -10,6 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IMenuService, MenuService>();
+builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddCors();
 
@@ -42,8 +43,9 @@ app.MapPost("/contact", (Contact contact) =>
     return contact;
 });
 
-app.MapGet("/menu", (IMenuService menuService) =>
+app.MapGet("/menu", (HttpContext context, IMenuService menuService) =>
 {
+    throw new Exception("Something bad happened...");
     return menuService.GetMenuItems();
 })
 .CacheOutput();

@@ -1,15 +1,48 @@
-﻿using WiredBrainCoffee.MinApi.Services.Interfaces;
+﻿using System.Text;
+using System.Text.Json;
+using System.Xml.Linq;
+using Microsoft.Extensions.Caching.Distributed;
+using WiredBrainCoffee.MinApi.Services.Interfaces;
 using WiredBrainCoffee.Models;
 
 namespace WiredBrainCoffee.MinApi.Services
 {
     public class OrderService : IOrderService
     {
+        IDistributedCache cache { get; }
+
+        public OrderService(IDistributedCache cache)
+        {
+            this.cache = cache;
+        }
+
         public List<Order> Orders { get; set; } = new List<Order>();
 
-        public List<Order> GetOrders()
+        public async Task<List<Order>> GetOrders()
         {
-            return GenerateOrders();
+            var key = "orders";
+            var bytes = await cache.GetAsync(key);
+            
+            if (bytes is null)
+            {
+                // Cache miss; get the data from the real source.
+                var orders = await GenerateOrders();
+
+                // Serialize and cache it.
+                var serializedOrders = JsonSerializer.Serialize(orders);
+                bytes = Encoding.UTF8.GetBytes(serializedOrders);
+                await cache.SetAsync(key, bytes, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10)
+                });
+            }
+            else
+            {
+                // Cache hit; deserialize it.
+                Orders = JsonSerializer.Deserialize<List<Order>>(bytes);
+           }
+
+            return Orders;
         }
 
         public Order GetOrderById(int id)
@@ -17,29 +50,7 @@ namespace WiredBrainCoffee.MinApi.Services
             return Orders.FirstOrDefault(x => x.Id == id);
         }
 
-        public Order AddOrder(Order order)
-        {
-            Orders.Add(order);
-
-            return order;
-        }
-
-        public void UpdateOrder(int id, Order newOrder)
-        {
-            var order = Orders.FirstOrDefault(x => x.Id == id);
-
-            order.Notes = newOrder.Notes;
-            order.PromoCode = newOrder.PromoCode;
-            order.OrderNumber = newOrder.OrderNumber;
-        }
-
-        public void DeleteOrder(int id)
-        {
-            var order = Orders.FirstOrDefault(x => x.Id == id);
-            Orders.Remove(order);
-        }
-
-        private List<Order> GenerateOrders()
+        private async Task<List<Order>> GenerateOrders()
         {
             string[] names = ["Bob", "Alex", "Joe", "Jane", "Sarah", "Josh", "Ann", "Laura"];
             string[] lastNames = ["Test", "Sample", "Doe", "Example", "Testing"];
@@ -47,7 +58,7 @@ namespace WiredBrainCoffee.MinApi.Services
             string[] notes = ["Sample order notes", "Testing notes", "More notes", "Wired brain notes", "My notes"];
             var orders = new List<Order>();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
                 var order = new Order()
                 {
